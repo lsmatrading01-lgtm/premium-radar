@@ -9,6 +9,20 @@ Refreshes itself every 30 minutes during US market hours via GitHub Actions — 
 laptop required. (It previously ran from a cron on a Mac and had to be republished
 by hand by a live session, so it went stale whenever the machine slept.)
 
+## Schedule
+
+**09:31 ET → 15:58 ET, every 30 min, Mon–Fri.** The first scan fires one minute after
+the open so the page stops showing pre-open data as soon as the session starts, and a
+final scan at 15:58 captures the closing tape.
+
+GitHub cron is UTC and ignores DST, so the cron windows are deliberately wide and a
+market-hours guard in Eastern time does the real gating. Both DST regimes were verified
+to produce the same 09:31 first scan and 15:58 last scan. **Do not tighten the cron to
+"match market hours"** — it will break at the next DST flip. Widen the cron, narrow the gate.
+
+Note that the first scan of each day is a full discovery pass, so it takes ~6 minutes to
+land; between 09:30 and ~09:37 the page still shows the prior session, honestly stamped.
+
 ## How it works
 
 | Step | File | What it does |

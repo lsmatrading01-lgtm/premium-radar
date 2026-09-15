@@ -2,11 +2,22 @@ name: Refresh Premium Radar
 
 on:
   schedule:
-    # GitHub cron is ALWAYS UTC and does not observe DST, so this window is
+    # GitHub cron is ALWAYS UTC and does not observe DST, so these windows are
     # deliberately wide enough to cover market hours in both EDT (UTC-4) and
     # EST (UTC-5). The "market open?" guard below does the precise gating in
     # Eastern time, so runs outside the session exit in seconds.
-    - cron: '7,37 13-21 * * 1-5'
+    # DO NOT "tighten" these to match market hours — that breaks at the next
+    # DST flip. Widen the cron, narrow the gate.
+    #
+    # Effective schedule (verified identical in EDT and EST):
+    #   09:31 ET first scan — 1 min after the open, so the page never shows
+    #   pre-open data once the session starts — then every 30 min to 15:31,
+    #   plus a final 15:58 scan to capture the closing tape.
+    - cron: '1,31 13-21 * * 1-5'
+    # Near-close scan. Both hours are listed so one of them lands at 15:58 ET
+    # in each DST regime; the other falls outside the gate (EDT) or adds one
+    # harmless extra afternoon scan (EST).
+    - cron: '58 19,20 * * 1-5'
   workflow_dispatch:
     inputs:
       full_scan:

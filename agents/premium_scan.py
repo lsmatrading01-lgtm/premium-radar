@@ -23,6 +23,9 @@ MIN_CONTRACT_OI = 100
 MAX_SPREAD_PCT = 10.0
 FAST = "--fast" in sys.argv  # reprice yesterday's discovered names with live quotes only
 UNIVERSE_PATH = os.path.join(ROOT, "signals", "radar_universe.json")
+# Git does not track empty dirs, so these may not exist on a fresh checkout.
+os.makedirs(os.path.join(ROOT, "signals"), exist_ok=True)
+os.makedirs(os.path.join(ROOT, "reports"), exist_ok=True)
 
 _c = UWClient(pause=0.2)
 

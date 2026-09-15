@@ -5,6 +5,7 @@ import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "reports", "premium-scan-latest.md")
 OUT = os.path.join(ROOT, "docs", "index.html")
+os.makedirs(os.path.join(ROOT, "docs"), exist_ok=True)
 
 md = open(SRC).read()
 sections = re.findall(r"## (.+?)\n((?:\|.*\n)+)", md)
