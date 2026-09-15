@@ -1,0 +1,125 @@
+name: Refresh Premium Radar
+
+on:
+  schedule:
+    # GitHub cron is ALWAYS UTC and does not observe DST, so this window is
+    # deliberately wide enough to cover market hours in both EDT (UTC-4) and
+    # EST (UTC-5). The "market open?" guard below does the precise gating in
+    # Eastern time, so runs outside the session exit in seconds.
+    - cron: '7,37 13-21 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      full_scan:
+        description: 'Force a full discovery pass (~10 min) instead of fast repricing'
+        type: boolean
+        default: false
+
+# Only one refresh at a time; a long discovery pass must not race the next tick.
+concurrency:
+  group: radar-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # No pip install: the scan is pure standard library (urllib/json/zoneinfo).
+
+      - name: Is the US market open?
+        id: gate
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import datetime
+          from zoneinfo import ZoneInfo
+
+          now = datetime.datetime.now(ZoneInfo("America/New_York"))
+          open_  = now.replace(hour=9,  minute=30, second=0, microsecond=0)
+          close  = now.replace(hour=16, minute=0,  second=0, microsecond=0)
+          is_open = now.weekday() < 5 and open_ <= now <= close
+
+          # Forced runs bypass the gate so you can refresh on demand.
+          import os
+          if os.environ.get("FORCED") == "true":
+              is_open = True
+
+          print(f"open={str(is_open).lower()}")
+          print(f"now={now:%Y-%m-%d %H:%M %Z}")
+          PY
+        env:
+          FORCED: ${{ github.event_name == 'workflow_dispatch' }}
+
+      - name: Skip (market closed)
+        if: steps.gate.outputs.open != 'true'
+        run: echo "Market closed at ${{ steps.gate.outputs.now }} — nothing to refresh."
+
+      - name: Decide scan mode
+        if: steps.gate.outputs.open == 'true'
+        id: mode
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import datetime, json, os
+          from zoneinfo import ZoneInfo
+
+          today = datetime.datetime.now(ZoneInfo("America/New_York")).date().isoformat()
+          forced = os.environ.get("FULL") == "true"
+
+          # Fast repricing is only valid against a universe discovered TODAY.
+          # Otherwise (first run of the day, or a forced full pass) rediscover.
+          fresh = False
+          try:
+              with open("signals/radar_universe.json") as fh:
+                  fresh = json.load(fh).get("date") == today
+          except (OSError, ValueError):
+              pass
+
+          print("fast=" + str(fresh and not forced).lower())
+          PY
+        env:
+          FULL: ${{ inputs.full_scan }}
+
+      - name: Scan
+        if: steps.gate.outputs.open == 'true'
+        env:
+          UW_API_KEY: ${{ secrets.UW_API_KEY }}
+          FAST: ${{ steps.mode.outputs.fast }}
+        run: |
+          if [ "$FAST" = "true" ]; then
+            echo "::notice::Fast repricing pass"
+            python3 agents/premium_scan.py --fast
+          else
+            echo "::notice::Full daily discovery pass (~10 min)"
+            python3 agents/premium_scan.py
+          fi
+
+      - name: Build page
+        if: steps.gate.outputs.open == 'true'
+        # --looping is honest here: this workflow really does run every 30 min.
+        run: python3 agents/radar_html.py --looping
+
+      - name: Commit refreshed data
+        if: steps.gate.outputs.open == 'true'
+        env:
+          STAMP: ${{ steps.gate.outputs.now }}
+        run: |
+          git config user.name  "premium-radar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/index.html reports/premium-scan-latest.md signals/radar_universe.json
+          if git diff --staged --quiet; then
+            echo "No change in scan output — nothing to commit."
+          else
+            git commit -m "radar: refresh $STAMP"
+            # Another tick may have landed while a slow discovery pass ran.
+            git pull --rebase --autostash origin main
+            git push
+          fi
