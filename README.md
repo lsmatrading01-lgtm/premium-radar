@@ -76,17 +76,28 @@ Pure standard library. No `pip install`, no `requirements.txt`.
       Body:          {"ref":"main"}
       ```
 
-      Expect **HTTP 204** with an empty body. The service's cron is almost certainly
-      UTC, so use two jobs and let the ET guard do the gating — the same
-      widen-the-cron-narrow-the-gate rule as above:
+      Expect **HTTP 204** with an empty body. Two jobs:
 
-      | Job | Cron (UTC) | Gives you |
+      | Job | Crontab | Gives you |
       |---|---|---|
-      | every 30 min | `5,35 13-20 * * 1-5` | 09:35 → 15:35 ET |
-      | near-close   | `55 19,20 * * 1-5`   | 15:55 ET |
+      | every 30 min | `5,35 9-15 * * 1-5` | 09:35 → 15:35 ET |
+      | near-close   | `55 15 * * 1-5`     | 15:55 ET |
 
-      Both regimes land on the same ET times; the firings that fall outside the
-      session (pre-open in EDT, one extra 14:55 in EST) are skipped or harmless.
+      **If the service supports a per-job timezone, set it to `America/New_York`
+      and use the crontabs above as-is** — DST is then handled for you, which is
+      strictly better than DST-proofing by hand. (cron-job.org has this under
+      ADVANCED → Time zone; it is what this radar runs on.) If your service is
+      UTC-only, shift to `5,35 13-20 * * 1-5` and `55 19,20 * * 1-5` and let the
+      ET guard do the gating — widen the cron, narrow the gate, as above.
+
+      The 09:05 firing lands before the open and is skipped; that is expected.
+
+      Verified working 2026-09-17: a success returns 204 and the response carries
+      `X-RateLimit-Limit: 5000` and `x-accepted-github-permissions: actions=write`.
+      **A limit of 60 means the request arrived anonymous** — the `Authorization`
+      header is not reaching GitHub — and GitHub answers that with a misleading
+      `404 Not Found` rather than a 401, because it will not confirm a resource
+      exists to a caller with no rights to it. Check the header before the URL.
 
       Do **not** send `{"inputs":{"force":true}}` on the schedule — that bypasses the
       market-hours guard and would restamp the page with post-close and weekend quotes.
