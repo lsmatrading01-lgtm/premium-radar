@@ -11,17 +11,30 @@ by hand by a live session, so it went stale whenever the machine slept.)
 
 ## Schedule
 
-**09:31 ET → 15:58 ET, every 30 min, Mon–Fri.** The first scan fires one minute after
-the open so the page stops showing pre-open data as soon as the session starts, and a
-final scan at 15:58 captures the closing tape.
+**09:35 ET → 15:55 ET, every 30 min, Mon–Fri**, driven by an external cron service that
+calls the `workflow_dispatch` API (see *Setup*). A market-hours guard in Eastern time
+does the real gating, so the trigger can fire on any minute without being silently
+dropped, and anything outside the session exits in ~8 seconds.
 
-GitHub cron is UTC and ignores DST, so the cron windows are deliberately wide and a
-market-hours guard in Eastern time does the real gating. Both DST regimes were verified
-to produce the same 09:31 first scan and 15:58 last scan. **Do not tighten the cron to
-"match market hours"** — it will break at the next DST flip. Widen the cron, narrow the gate.
+**Why not GitHub's own cron?** Because it does not run. Measured 2026-09-15..17: of ~23
+scheduled firings due in the 13:00–18:00 UTC window — 9am–2pm ET, the first half of the
+session — **zero** ran. GitHub sheds scheduled workflows under load on the shared runner
+pool, and that window is peak US business hours. Late-day firings landed ~6 of 20. API
+dispatches, by contrast, have run within seconds every time. The `schedule:` blocks are
+kept only as a free backstop for the hours GitHub does honour.
+
+The cron blocks that remain are still deliberately wide, because GitHub cron is UTC and
+ignores DST. **Do not tighten them to "match market hours"** — that breaks at the next
+DST flip. Widen the cron, narrow the gate.
+
+A freshness floor in the gate skips any scan landing within 12 minutes of the previous
+one, so the backstop cron and the external trigger overlapping costs ~8 seconds rather
+than a duplicate repricing pass. Do not raise it to 20: the stamp is written when a scan
+finishes, and the 15:55 near-close trigger is only ~18 minutes behind the 15:35 one, so a
+20-minute floor would silently eat the closing scan.
 
 Note that the first scan of each day is a full discovery pass, so it takes ~6 minutes to
-land; between 09:30 and ~09:37 the page still shows the prior session, honestly stamped.
+land; until it does, the page still shows the prior session, honestly stamped.
 
 ## How it works
 
@@ -45,11 +58,47 @@ Pure standard library. No `pip install`, no `requirements.txt`.
 1. Repo secret `UW_API_KEY` — your Unusual Whales key. *(Settings → Secrets and
    variables → Actions.)* Never lands in the page or the repo.
 2. Pages: Settings → Pages → Source = **Deploy from a branch**, branch `main`, folder `/docs`.
+3. **External trigger** — this is what actually runs the radar during the session.
+
+   a. Create a **fine-grained** personal access token (Settings → Developer settings →
+      Personal access tokens → Fine-grained): *Repository access* = **only this repo**,
+      *Permissions* → **Actions: Read and write**, and nothing else. That is enough to
+      dispatch this workflow and nothing more — it cannot push code, read `UW_API_KEY`,
+      or touch any other repo. Set an expiry and diarise the renewal; the radar goes
+      quiet when the token lapses.
+
+   b. Point any cron service (cron-job.org, a Cloudflare Worker, etc.) at:
+
+      ```
+      POST https://api.github.com/repos/lsmatrading01-lgtm/premium-radar/actions/workflows/radar.yml/dispatches
+      Accept:        application/vnd.github+json
+      Authorization: Bearer <token>
+      Body:          {"ref":"main"}
+      ```
+
+      Expect **HTTP 204** with an empty body. The service's cron is almost certainly
+      UTC, so use two jobs and let the ET guard do the gating — the same
+      widen-the-cron-narrow-the-gate rule as above:
+
+      | Job | Cron (UTC) | Gives you |
+      |---|---|---|
+      | every 30 min | `5,35 13-20 * * 1-5` | 09:35 → 15:35 ET |
+      | near-close   | `55 19,20 * * 1-5`   | 15:55 ET |
+
+      Both regimes land on the same ET times; the firings that fall outside the
+      session (pre-open in EDT, one extra 14:55 in EST) are skipped or harmless.
+
+      Do **not** send `{"inputs":{"force":true}}` on the schedule — that bypasses the
+      market-hours guard and would restamp the page with post-close and weekend quotes.
 
 ## Running it by hand
 
-Actions → *Refresh Premium Radar* → **Run workflow**. This bypasses the market-hours
-gate, and ticking `full_scan` forces a full discovery pass.
+Actions → *Refresh Premium Radar* → **Run workflow**. Tick `force` to bypass the
+market-hours gate and the freshness floor, and `full_scan` to force a full discovery
+pass instead of repricing today's universe.
+
+Note the change: a plain dispatch now **respects** the gate, because the external trigger
+uses plain dispatches and must not scan outside the session. Only `force` bypasses it.
 
 Locally:
 

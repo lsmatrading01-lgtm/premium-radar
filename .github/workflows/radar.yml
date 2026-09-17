@@ -1,5 +1,16 @@
 name: Refresh Premium Radar
 
+# PRIMARY TRIGGER IS workflow_dispatch, NOT cron.
+#
+# Measured over 2026-09-15..17: of ~23 scheduled firings due in the 13:00-18:00
+# UTC window (9am-2pm ET, the first half of the session), ZERO ran. GitHub sheds
+# scheduled workflows under load on the shared pool, and that window is peak US
+# business hours. Late-day firings landed ~6 of 20. Manual/API dispatches, by
+# contrast, have run within seconds every single time.
+#
+# So an external cron service calls the workflow_dispatch REST API on the real
+# schedule. The cron blocks below are kept only as a free backstop for the hours
+# GitHub does honour; the gate makes a duplicate cost ~8s, so they are harmless.
 on:
   schedule:
     # GitHub cron is ALWAYS UTC and does not observe DST, so these windows are
@@ -32,6 +43,10 @@ on:
         description: 'Force a full discovery pass (~10 min) instead of fast repricing'
         type: boolean
         default: false
+      force:
+        description: 'Bypass the market-hours gate and the freshness floor (manual use only)'
+        type: boolean
+        default: false
 
 # Only one refresh at a time; a long discovery pass must not race the next tick.
 concurrency:
@@ -59,55 +74,79 @@ jobs:
         id: gate
         run: |
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import datetime
+          import datetime, json, os
           from zoneinfo import ZoneInfo
 
           now = datetime.datetime.now(ZoneInfo("America/New_York"))
           open_  = now.replace(hour=9,  minute=30, second=0, microsecond=0)
           close  = now.replace(hour=16, minute=0,  second=0, microsecond=0)
+          forced = os.environ.get("FORCED") == "true"
+          event  = os.environ.get("EVENT", "")
 
-          # GitHub fires scheduled runs late — often by 10-20 min. Gating on
-          # the arrival time alone throws away a slot that was scheduled inside
-          # the session but showed up after 16:00, which is exactly how the
-          # last scan of the day gets lost.
+          in_session = now.weekday() < 5 and open_ <= now <= close
+
+          if event == "schedule":
+              # GitHub fires scheduled runs late — often by 10-20 min. Gating a
+              # cron run on its ARRIVAL time throws away a slot that was due
+              # inside the session but showed up after 16:00, which is how the
+              # last scan of the day gets lost. So for cron runs, gate on the
+              # SLOT the run belongs to (the crons only fire at these minutes),
+              # and allow it to arrive up to `grace` late.
+              #
+              # Keying off the slot — rather than just widening the close to
+              # 16:15 — matters because the wide DST-proof cron really does
+              # have a slot at 16:07 ET in both regimes. A wall-clock grace
+              # would let that post-close slot restamp the page with
+              # post-close quotes; this does not.
+              SLOT_MINUTES = (7, 37, 52)
+              grace = datetime.timedelta(minutes=15)
+              slots = [now.replace(hour=h, minute=m, second=0, microsecond=0)
+                       for h in range(24) for m in SLOT_MINUTES]
+              past = [t for t in slots if t <= now]
+              slot = max(past) if past else None
+              is_open = (now.weekday() < 5 and slot is not None
+                         and open_ <= slot <= close and now - slot <= grace)
+          else:
+              # Dispatches (the external cron service, or you by hand) arrive
+              # within seconds of being sent, so the plain session window is
+              # the honest test. Deliberately NOT slot-based: the external
+              # schedule must be free to fire on any minute without silently
+              # being gated out.
+              is_open = in_session
+
+          # Freshness floor: never rescan on top of a scan that is only minutes
+          # old. The GitHub cron backstop and the external trigger can both land
+          # in the same few minutes; without this, the duplicate costs a full
+          # repricing pass and a burst of UW calls instead of ~8 seconds.
           #
-          # So gate on the SLOT this run belongs to, not on when it arrived:
-          # take the most recent slot at or before now (the crons above only
-          # fire at these minutes), require that slot to be inside the session,
-          # and allow it to arrive up to `grace` late.
-          #
-          # Keying off the slot — rather than simply widening the close to
-          # 16:15 — matters because the wide DST-proof cron really does have a
-          # slot at 16:07 ET in both regimes. A wall-clock grace would let that
-          # post-close slot run and restamp the page with post-close quotes;
-          # this does not.
-          SLOT_MINUTES = (7, 37, 52)
-          grace = datetime.timedelta(minutes=15)
+          # 12 min, NOT 20: the stamp is written when a scan FINISHES, and the
+          # near-close trigger is only 20 min after the 15:35 one. A 20-minute
+          # floor would measure ~18 min of gap there and silently eat the
+          # closing scan — the single most valuable one of the day.
+          FLOOR = datetime.timedelta(minutes=12)
+          too_fresh = False
+          try:
+              with open("signals/last_scan.json") as fh:
+                  last = datetime.datetime.fromisoformat(json.load(fh)["scanned_at"])
+              if now - last < FLOOR:
+                  too_fresh = True
+                  print(f"note=last scan {int((now - last).total_seconds() // 60)} min ago")
+          except (OSError, ValueError, KeyError):
+              pass
 
-          slots = [
-              now.replace(hour=h, minute=m, second=0, microsecond=0)
-              for h in range(24) for m in SLOT_MINUTES
-          ]
-          past = [s for s in slots if s <= now]
-          slot = max(past) if past else None
+          if too_fresh:
+              is_open = False
 
-          is_open = (
-              now.weekday() < 5
-              and slot is not None
-              and open_ <= slot <= close
-              and now - slot <= grace
-          )
-
-          # Forced runs bypass the gate so you can refresh on demand.
-          import os
-          if os.environ.get("FORCED") == "true":
+          # Forced runs bypass everything above, for on-demand refreshes.
+          if forced:
               is_open = True
 
           print(f"open={str(is_open).lower()}")
           print(f"now={now:%Y-%m-%d %H:%M %Z}")
           PY
         env:
-          FORCED: ${{ github.event_name == 'workflow_dispatch' }}
+          FORCED: ${{ inputs.force }}
+          EVENT: ${{ github.event_name }}
 
       - name: Skip (market closed)
         if: steps.gate.outputs.open != 'true'
@@ -157,6 +196,21 @@ jobs:
         # --looping is honest here: this workflow really does run every 30 min.
         run: python3 agents/radar_html.py --looping
 
+      - name: Stamp last scan
+        if: steps.gate.outputs.open == 'true'
+        # Committed so the next run — in a fresh, ephemeral container — can see
+        # how old the current page is and apply the freshness floor in the gate.
+        run: |
+          python3 - <<'PY'
+          import datetime, json, os
+          from zoneinfo import ZoneInfo
+          os.makedirs("signals", exist_ok=True)
+          now = datetime.datetime.now(ZoneInfo("America/New_York"))
+          with open("signals/last_scan.json", "w") as fh:
+              json.dump({"scanned_at": now.isoformat()}, fh, indent=2)
+              fh.write("\n")
+          PY
+
       - name: Commit refreshed data
         if: steps.gate.outputs.open == 'true'
         env:
@@ -164,7 +218,7 @@ jobs:
         run: |
           git config user.name  "premium-radar-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html reports/premium-scan-latest.md signals/radar_universe.json
+          git add docs/index.html reports/premium-scan-latest.md signals/radar_universe.json signals/last_scan.json
           if git diff --staged --quiet; then
             echo "No change in scan output — nothing to commit."
           else
