@@ -13,35 +13,57 @@ sections = re.findall(r"## (.+?)\n((?:\|.*\n)+)", md)
 def rows_html(block):
     lines = [l for l in block.strip().split("\n") if l.startswith("|")][2:]
     rows = [[x.strip() for x in l.strip("|").split("|")] for l in lines]
-    # 12 cols: rank,ticker,price,strike,expiry,premium,yield,ann,iv,oi,spread,flags
-    # 11 cols (older reports): same without expiry
+    # Current: 14 cols — rank,ticker,price,strike,expiry,premium,yield,ann,iv,1w,vs20d,oi,spread,flags
+    # 12 cols: pre-trend reports (no 1w / vs20d).  11 cols: older still (also no expiry).
+    # Old shapes are kept readable so a report written before this change still renders.
+    K = ("rank", "tk", "price", "strike", "expiry", "prem", "yld", "ann", "iv", "w1", "ext", "oi", "spread", "flags")
     parsed = []
     for c in rows:
-        if len(c) >= 12:
-            parsed.append((c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10], c[11]))
+        if len(c) >= 14:
+            parsed.append(dict(zip(K, c[:14])))
+        elif len(c) >= 12:
+            v = c[:9] + ["", ""] + c[9:12]
+            parsed.append(dict(zip(K, v)))
         else:
-            parsed.append((c[0], c[1], c[2], c[3], "", c[4], c[5], c[6], c[7], c[8], c[9], c[10]))
-    top = max((float(p[6].rstrip("%")) for p in parsed), default=1) or 1
-    out = []
-    for rank, tk, price, strike, expiry, prem, yld_s, ann, iv, oi, spread, flags_s in parsed:
-        bar = min(float(yld_s.rstrip("%")) / top, 1) * 100
-        flag = ""
-        if "⚠️E" in flags_s:
-            date = flags_s.replace("⚠️E", "").replace("⚠️", "").strip()
-            flag = f'<span class="pill">earnings {date[5:]}</span>'
-        out.append(f"""<tr>
-<td class="rank">{rank}</td>
-<td class="tk">{tk}</td>
-<td class="num">{price}</td>
-<td class="num">{strike}</td>
-<td class="num dim">{expiry[5:] if expiry else ""}</td>
-<td class="num prem">{prem}</td>
-<td class="num yld"><span class="bar" style="--w:{bar:.0f}%"></span>{yld_s}</td>
-<td class="num dim">{ann}</td>
-<td class="num dim">{iv}</td>
-<td class="num dim">{oi}</td>
-<td class="num dim">{spread}</td>
-<td>{flag}</td>
+            v = c[:4] + [""] + c[4:9] + ["", ""] + c[9:11]
+            parsed.append(dict(zip(K, (v + [""] * 14)[:14])))
+    top = max((float(p["yld"].rstrip("%")) for p in parsed), default=1) or 1
+    out, seen_extended = [], False
+    for r in parsed:
+        bar = min(float(r["yld"].rstrip("%")) / top, 1) * 100
+        pills = []
+        fl = r["flags"]
+        if "⚠️E" in fl:
+            date = re.sub(r"⚠️[EX▼]?", "", fl).strip()
+            pills.append(f'<span class="pill">earnings {date[5:]}</span>')
+        if "⚠️X" in fl:
+            pills.append('<span class="pill warn">extended</span>')
+        if "⚠️▼" in fl:
+            pills.append('<span class="pill warn">fell hard</span>')
+        # First extended row gets the divider: the visual break between "calm"
+        # and "already ran" is the whole point of the ordering.
+        cls = []
+        if "⚠️X" in fl:
+            cls.append("ext")
+            if not seen_extended:
+                cls.append("ext-first")
+                seen_extended = True
+        tr = f' class="{" ".join(cls)}"' if cls else ""
+        out.append(f"""<tr{tr}>
+<td class="rank">{r["rank"]}</td>
+<td class="tk">{r["tk"]}</td>
+<td class="num">{r["price"]}</td>
+<td class="num">{r["strike"]}</td>
+<td class="num dim">{r["expiry"][5:] if r["expiry"] else ""}</td>
+<td class="num prem">{r["prem"]}</td>
+<td class="num yld"><span class="bar" style="--w:{bar:.0f}%"></span>{r["yld"]}</td>
+<td class="num dim">{r["ann"]}</td>
+<td class="num dim">{r["iv"]}</td>
+<td class="num trend">{r["w1"]}</td>
+<td class="num trend">{r["ext"]}</td>
+<td class="num dim">{r["oi"]}</td>
+<td class="num dim">{r["spread"]}</td>
+<td>{" ".join(pills)}</td>
 </tr>""")
     return "\n".join(out), len(lines)
 
@@ -61,7 +83,7 @@ for title, block in sections:
     tables.append(f"""<section>
 <div class="sec-head"><h2>{label}</h2>{note}</div>
 <div class="scroll"><table>
-<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
+<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th title="price change over the past week">1w</th><th title="ATRs above the 20-day moving average">vs20d</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
 <tbody>{body}</tbody>
 </table></div>
 </section>""")
@@ -119,6 +141,13 @@ td{padding:.42rem .65rem;border-top:1px solid var(--line);white-space:nowrap;}
   margin-right:.55rem;}
 .pill{font-size:.72rem;font-weight:600;background:var(--warn-bg);color:var(--warn-ink);
   border-radius:999px;padding:.14rem .55rem;}
+.pill.warn{background:transparent;color:var(--muted);border:1px solid var(--line);}
+/* Trend columns read as context, not as the headline number. */
+.trend{color:var(--muted);font-size:.8rem;}
+/* Already-run names still appear — they just stop competing for the eye. */
+tr.ext td{opacity:.62;}
+tr.ext .yld{font-weight:500;}
+tr.ext-first td{border-top:2px solid var(--line);padding-top:.62rem;}
 .note{border-left:3px solid var(--accent);padding:.15rem 0 .15rem 1rem;color:var(--muted);
   max-width:68ch;margin:0 0 2.2rem;font-size:.92rem;}
 .note b{color:var(--ink);}

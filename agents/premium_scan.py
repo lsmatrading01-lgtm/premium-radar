@@ -21,6 +21,24 @@ LABELS = ([f"Same day / nearest ({TODAY.strftime('%b')} {TODAY.day} onward)"]
 N_CANDIDATES = 350
 MIN_CONTRACT_OI = 100
 MAX_SPREAD_PCT = 10.0
+
+# --- buy-write pullback guard -------------------------------------------------
+# These signals are used to BUY the stock and write a call against it, so a name
+# that has already run is the bad case: you pay the top for the shares and the
+# premium covers little of the give-back. Ranking by yield selects for exactly
+# that, because extrinsic premium is priced off IV and IV inflates after a move.
+#
+# Extension is measured in ATRs above the 20-day SMA, not raw percent: 16% above
+# the 20-day is an ordinary week for MSTR and an extreme for AAPL. Measured on
+# the 2026-09-18 list, raw percent ranks AAPL 22nd of 36 while ATRs rank it 7th
+# — the ATR reading is the honest one.
+#
+# Names breaching either threshold are NOT dropped; they sort below the calm
+# ones and are flagged. Nothing is hidden, and the default reading order is the
+# one we actually want.
+MAX_EXT_ATR = 1.5   # ATRs above the 20-day SMA before a name counts as extended
+MAX_POP_1W = 7.0    # % gained over the week before a name counts as extended
+SHARP_DROP_1W = -5.0  # % lost over the week -> falling-knife flag (shown, not tiered)
 FAST = "--fast" in sys.argv  # reprice yesterday's discovered names with live quotes only
 UNIVERSE_PATH = os.path.join(ROOT, "signals", "radar_universe.json")
 # Git does not track empty dirs, so these may not exist on a fresh checkout.
@@ -52,6 +70,30 @@ def f(x):
         return float(x)
     except (TypeError, ValueError):
         return None
+
+
+def trend_inputs(r):
+    """Levels needed to score how extended a name is, from one screener row."""
+    return {"sma20": f(r.get("sma_20")), "atr14": f(r.get("atr_14")),
+            "prev_close": f(r.get("prev_close")), "wk_close": f(r.get("one_week_close"))}
+
+
+def trend_scores(s, spot):
+    """Extension in ATRs above the 20-day SMA, and the 1-day / 1-week move.
+
+    Computed against `spot` so an intraday repricing pass reflects the current
+    tape. Any input missing -> None, and a None never counts as extended: we do
+    not demote a name on absent data.
+    """
+    sma20, atr14 = s.get("sma20"), s.get("atr14")
+    ext = (spot - sma20) / atr14 if (spot and sma20 and atr14) else None
+    d1 = (spot / s["prev_close"] - 1) * 100 if (spot and s.get("prev_close")) else None
+    w1 = (spot / s["wk_close"] - 1) * 100 if (spot and s.get("wk_close")) else None
+    return ext, d1, w1
+
+
+def is_extended(ext, w1):
+    return (ext is not None and ext > MAX_EXT_ATR) or (w1 is not None and w1 > MAX_POP_1W)
 
 
 def strike_from_symbol(sym):
@@ -89,6 +131,11 @@ while not FAST and len(cands) < N_CANDIDATES:
             "ticker": r["ticker"], "close": close, "iv": f(r.get("volatility")),
             "mcap": f(r.get("marketcap")), "earnings": r.get("next_earnings_date"),
             "sector": r.get("sector"), "avg_vol": avg_vol,
+            # Trend inputs, all free — they ride along on the screener call the
+            # universe is built from. Stored as levels, not as finished
+            # percentages, so a fast repricing pass recomputes them against the
+            # live spot instead of serving this morning's numbers.
+            **trend_inputs(r),
         })
         if len(cands) >= N_CANDIDATES:
             break
@@ -119,9 +166,19 @@ if not FAST:
         avg_vol = max(f(info.get("avg30_volume")) or 0, f(st.get("total_volume")) or 0)
         if not close or avg_vol < 3_000_000:
             continue
+        # These names are added by hand, so they never passed through the
+        # screener row that carries the trend inputs. One extra call each
+        # (13 max) keeps them scored on the same basis as everyone else —
+        # otherwise the mega-caps would be structurally unflaggable.
+        try:
+            srow = c.get("screener/stocks", ticker=tkr)["data"]
+            trend = trend_inputs(srow[0]) if srow else {}
+        except (SystemExit, KeyError, IndexError):
+            trend = {}
         cands.append({"ticker": tkr, "close": close, "iv": iv,
                       "mcap": f(info.get("marketcap")), "earnings": info.get("next_earnings_date"),
-                      "sector": info.get("sector"), "mega": True, "avg_vol": avg_vol})
+                      "sector": info.get("sector"), "mega": True, "avg_vol": avg_vol,
+                      **trend})
     print(f"universe with mega-cap midweek names: {len(cands)}", flush=True)
 
 # --- 2. price ATM calls per target expiry ---
@@ -187,12 +244,14 @@ for i, s in enumerate(cands):
         dte = (datetime.date.fromisoformat(best) - TODAY).days
         yld = mid / spot * 100
         s["active"] = True
+        ext, d1, w1 = trend_scores(s, spot)
         results[t].append({
             **{k: v for k, v in s.items() if k != "expiries"},
             "expiry": best, "dte": dte, "strike": strike, "mid": mid,
             "bid": bid, "ask": ask, "oi": oi, "yield": yld,
             "ann": yld * 365 / max(dte, 1),
             "spread_pct": (ask - bid) / mid * 100 if mid else 0,
+            "ext": ext, "d1": d1, "w1": w1, "extended": is_extended(ext, w1),
         })
     print(f"[{i+1}/{len(cands)}] {tkr} done", flush=True)
 
@@ -206,18 +265,38 @@ out = [f"# Highest ATM call premium — scan of {TODAY} ({_mode})", ""]
 out.append(f"Universe: top-IV US common stocks/ADRs, mcap ≥ $500M, price ≥ $5, volume ≥ 3M shares/day (30d avg or today), total option OI ≥ 10000 ({len(cands)} names scanned).")
 out.append("Premium = mid of the nearest at/above-the-money call (pure extrinsic). Yield = premium / stock price.")
 out.append("Hard filters: contract OI >= 100, bid/ask spread <= 10% of mid. ⚠️E = earnings before expiry.")
+out.append(f"These are buy-writes, so a name that already ran is the bad case. Calm names rank first; "
+           f"⚠️X = extended (>{MAX_EXT_ATR:g} ATR above its 20-day SMA, or >+{MAX_POP_1W:g}% on the week) and sorts below them. "
+           f"⚠️▼ = down more than {abs(SHARP_DROP_1W):g}% on the week — shown, not demoted, since a falling knife is a different risk.")
 out.append("")
+
+
+def pct(v, dp=1):
+    return f"{v:+.{dp}f}%" if v is not None else "–"
+
+
+def atrs(v):
+    return f"{v:+.1f}" if v is not None else "–"
+
+
 for t, label in zip(TARGETS, LABELS):
-    rows = sorted(results[t], key=lambda r: -r["yield"])[:20]
+    # Calm first, each tier by yield. The top-20 cut then favours calm names on
+    # its own: on a day with 20+ calm candidates the extended tier drops off the
+    # bottom entirely, which is the behaviour we want and needs no special case.
+    rows = sorted(results[t], key=lambda r: (r["extended"], -r["yield"]))[:20]
     out.append(f"## {label}")
-    out.append("| # | Ticker | Price | Strike | Expiry | Premium (mid) | Yield | Annualized | IV | OI | Spread | Flags |")
-    out.append("|--:|--------|------:|-------:|--------|--------------:|------:|-----------:|---:|---:|-------:|-------|")
+    out.append("| # | Ticker | Price | Strike | Expiry | Premium (mid) | Yield | Annualized | IV | 1w | vs20d | OI | Spread | Flags |")
+    out.append("|--:|--------|------:|-------:|--------|--------------:|------:|-----------:|---:|---:|------:|---:|-------:|-------|")
     for n, r in enumerate(rows, 1):
         flags = []
         if r["earnings"] and TODAY.isoformat() <= r["earnings"] <= r["expiry"]:
             flags.append("⚠️E " + r["earnings"])
+        if r["extended"]:
+            flags.append("⚠️X")
+        if r["w1"] is not None and r["w1"] < SHARP_DROP_1W:
+            flags.append("⚠️▼")
         out.append(f"| {n} | {r['ticker']} | ${r['close']:.2f} | ${r['strike']:g} | {r['expiry']} | ${r['mid']:.2f} "
-                   f"| {r['yield']:.1f}% | {r['ann']:.0f}% | {r['iv']*100:.0f}% | {r['oi']} "
+                   f"| {r['yield']:.1f}% | {r['ann']:.0f}% | {r['iv']*100:.0f}% | {pct(r['w1'], 0)} | {atrs(r['ext'])} | {r['oi']} "
                    f"| {r['spread_pct']:.0f}% | {' '.join(flags)} |")
     out.append("")
 
