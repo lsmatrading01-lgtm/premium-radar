@@ -51,6 +51,13 @@ td{padding:.42rem .65rem;border-top:1px solid var(--line);white-space:nowrap;}
   margin-right:.55rem;}
 .pill{font-size:.72rem;font-weight:600;background:var(--warn-bg);color:var(--warn-ink);
   border-radius:999px;padding:.14rem .55rem;}
+.pill.warn{background:transparent;color:var(--muted);border:1px solid var(--line);}
+/* Trend columns read as context, not as the headline number. */
+.trend{color:var(--muted);font-size:.8rem;}
+/* Already-run names still appear — they just stop competing for the eye. */
+tr.ext td{opacity:.62;}
+tr.ext .yld{font-weight:500;}
+tr.ext-first td{border-top:2px solid var(--line);padding-top:.62rem;}
 .note{border-left:3px solid var(--accent);padding:.15rem 0 .15rem 1rem;color:var(--muted);
   max-width:68ch;margin:0 0 2.2rem;font-size:.92rem;}
 .note b{color:var(--ink);}
@@ -62,7 +69,7 @@ footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);paddi
 expirations, out to two weeks — individual stocks only, no ETFs or indexes — scanned across
 350 of the highest-implied-volatility liquid US names.</p>
 <div class="meta">
-<span class="chip">Updated <b>Fri Sep 18, 3:37 PM ET</b> · auto-refreshes every 30 min</span>
+<span class="chip">Updated <b>Mon Sep 21, 9:39 AM ET</b> · auto-refreshes every 30 min</span>
 <span class="chip">Source <b>Unusual Whales</b></span>
 <span class="chip">Mcap ≥ <b>$500M</b></span>
 <span class="chip">Price ≥ <b>$5</b></span>
@@ -77,503 +84,493 @@ the company reports before that expiry, so the premium is inflated by gap risk.
 Names that repeat across every bucket are usually correlated (crypto miners and
 bitcoin-treasury stocks move together) — several covered calls on them is one bet, not many.</p>
 <section>
-<div class="sec-head"><h2>Same day / nearest (Sep 18 onward)</h2><span class="count">15 names pass the filters at this expiry</span></div>
+<div class="sec-head"><h2>Same day / nearest (Sep 21 onward)</h2><span class="count">10 names pass the filters at this expiry</span></div>
 <div class="scroll"><table>
-<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
+<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th title="price change over the past week">1w</th><th title="ATRs above the 20-day moving average">vs20d</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
 <tbody><tr>
 <td class="rank">1</td>
-<td class="tk">SKHY</td>
-<td class="num">$189.60</td>
-<td class="num">$190</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$1.33</td>
-<td class="num yld"><span class="bar" style="--w:100%"></span>0.7%</td>
-<td class="num dim">255%</td>
-<td class="num dim">58%</td>
-<td class="num dim">9335</td>
-<td class="num dim">7%</td>
+<td class="tk">AMZN</td>
+<td class="num">$254.72</td>
+<td class="num">$255</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$1.75</td>
+<td class="num yld"><span class="bar" style="--w:37%"></span>0.7%</td>
+<td class="num dim">251%</td>
+<td class="num dim">30%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">-0.2</td>
+<td class="num dim">5127</td>
+<td class="num dim">4%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">2</td>
-<td class="tk">SNDK</td>
-<td class="num">$1739.54</td>
-<td class="num">$1740</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$7.55</td>
-<td class="num yld"><span class="bar" style="--w:57%"></span>0.4%</td>
-<td class="num dim">158%</td>
-<td class="num dim">69%</td>
-<td class="num dim">669</td>
-<td class="num dim">7%</td>
+<td class="tk">GOOGL</td>
+<td class="num">$353.45</td>
+<td class="num">$355</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$1.11</td>
+<td class="num yld"><span class="bar" style="--w:16%"></span>0.3%</td>
+<td class="num dim">115%</td>
+<td class="num dim">30%</td>
+<td class="num trend">+1%</td>
+<td class="num trend">+1.4</td>
+<td class="num dim">3281</td>
+<td class="num dim">6%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">3</td>
-<td class="tk">SPCX</td>
-<td class="num">$152.62</td>
-<td class="num">$155</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.52</td>
-<td class="num yld"><span class="bar" style="--w:43%"></span>0.3%</td>
-<td class="num dim">124%</td>
-<td class="num dim">49%</td>
-<td class="num dim">32620</td>
-<td class="num dim">4%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">4</td>
-<td class="tk">META</td>
-<td class="num">$669.53</td>
-<td class="num">$670</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$1.81</td>
-<td class="num yld"><span class="bar" style="--w:43%"></span>0.3%</td>
-<td class="num dim">98%</td>
-<td class="num dim">37%</td>
-<td class="num dim">12873</td>
-<td class="num dim">7%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">5</td>
-<td class="tk">ARM</td>
-<td class="num">$269.36</td>
-<td class="num">$270</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.70</td>
-<td class="num yld"><span class="bar" style="--w:43%"></span>0.3%</td>
-<td class="num dim">95%</td>
-<td class="num dim">68%</td>
-<td class="num dim">4707</td>
-<td class="num dim">6%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">6</td>
-<td class="tk">MU</td>
-<td class="num">$1007.85</td>
-<td class="num">$1010</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$2.27</td>
-<td class="num yld"><span class="bar" style="--w:29%"></span>0.2%</td>
-<td class="num dim">82%</td>
-<td class="num dim">60%</td>
-<td class="num dim">3578</td>
+<td class="tk">NVDA</td>
+<td class="num">$222.91</td>
+<td class="num">$225</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$0.61</td>
+<td class="num yld"><span class="bar" style="--w:16%"></span>0.3%</td>
+<td class="num dim">101%</td>
+<td class="num dim">32%</td>
+<td class="num trend">+6%</td>
+<td class="num trend">+0.6</td>
+<td class="num dim">11148</td>
 <td class="num dim">2%</td>
 <td></td>
 </tr>
 <tr>
-<td class="rank">7</td>
-<td class="tk">AMD</td>
-<td class="num">$546.17</td>
-<td class="num">$547.5</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.97</td>
-<td class="num yld"><span class="bar" style="--w:29%"></span>0.2%</td>
-<td class="num dim">65%</td>
-<td class="num dim">51%</td>
-<td class="num dim">912</td>
+<td class="rank">4</td>
+<td class="tk">TSLA</td>
+<td class="num">$375.36</td>
+<td class="num">$377.5</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$1.02</td>
+<td class="num yld"><span class="bar" style="--w:16%"></span>0.3%</td>
+<td class="num dim">99%</td>
+<td class="num dim">44%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+1.2</td>
+<td class="num dim">2715</td>
+<td class="num dim">2%</td>
+<td></td>
+</tr>
+<tr>
+<td class="rank">5</td>
+<td class="tk">AAPL</td>
+<td class="num">$334.13</td>
+<td class="num">$335</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$0.82</td>
+<td class="num yld"><span class="bar" style="--w:11%"></span>0.2%</td>
+<td class="num dim">90%</td>
+<td class="num dim">23%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">+1.5</td>
+<td class="num dim">4315</td>
+<td class="num dim">2%</td>
+<td></td>
+</tr>
+<tr>
+<td class="rank">6</td>
+<td class="tk">MSFT</td>
+<td class="num">$494.04</td>
+<td class="num">$497.5</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$0.67</td>
+<td class="num yld"><span class="bar" style="--w:5%"></span>0.1%</td>
+<td class="num dim">50%</td>
+<td class="num dim">25%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.4</td>
+<td class="num dim">900</td>
 <td class="num dim">6%</td>
 <td></td>
 </tr>
-<tr>
+<tr class="ext ext-first">
+<td class="rank">7</td>
+<td class="tk">AMD</td>
+<td class="num">$584.76</td>
+<td class="num">$585</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$11.10</td>
+<td class="num yld"><span class="bar" style="--w:100%"></span>1.9%</td>
+<td class="num dim">693%</td>
+<td class="num dim">54%</td>
+<td class="num trend">+19%</td>
+<td class="num trend">+3.6</td>
+<td class="num dim">548</td>
+<td class="num dim">5%</td>
+<td><span class="pill warn">extended</span></td>
+</tr>
+<tr class="ext">
 <td class="rank">8</td>
-<td class="tk">HOOD</td>
-<td class="num">$119.45</td>
-<td class="num">$120</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.20</td>
-<td class="num yld"><span class="bar" style="--w:29%"></span>0.2%</td>
-<td class="num dim">60%</td>
-<td class="num dim">59%</td>
-<td class="num dim">14234</td>
-<td class="num dim">5%</td>
-<td></td>
+<td class="tk">INTC</td>
+<td class="num">$115.93</td>
+<td class="num">$116</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$1.23</td>
+<td class="num yld"><span class="bar" style="--w:58%"></span>1.1%</td>
+<td class="num dim">389%</td>
+<td class="num dim">72%</td>
+<td class="num trend">+19%</td>
+<td class="num trend">+3.0</td>
+<td class="num dim">3333</td>
+<td class="num dim">6%</td>
+<td><span class="pill warn">extended</span></td>
 </tr>
-<tr>
+<tr class="ext">
 <td class="rank">9</td>
-<td class="tk">NFLX</td>
-<td class="num">$71.89</td>
-<td class="num">$72</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.11</td>
-<td class="num yld"><span class="bar" style="--w:29%"></span>0.2%</td>
-<td class="num dim">58%</td>
-<td class="num dim">38%</td>
-<td class="num dim">3723</td>
-<td class="num dim">9%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">10</td>
-<td class="tk">NVDA</td>
-<td class="num">$219.59</td>
-<td class="num">$220</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.30</td>
-<td class="num yld"><span class="bar" style="--w:14%"></span>0.1%</td>
-<td class="num dim">51%</td>
-<td class="num dim">31%</td>
-<td class="num dim">67402</td>
+<td class="tk">MU</td>
+<td class="num">$1047.57</td>
+<td class="num">$1050</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$8.95</td>
+<td class="num yld"><span class="bar" style="--w:47%"></span>0.9%</td>
+<td class="num dim">312%</td>
+<td class="num dim">60%</td>
+<td class="num trend">+13%</td>
+<td class="num trend">+1.7</td>
+<td class="num dim">2571</td>
 <td class="num dim">3%</td>
-<td></td>
+<td><span class="pill warn">extended</span></td>
 </tr>
-<tr>
-<td class="rank">11</td>
-<td class="tk">PLTR</td>
-<td class="num">$176.43</td>
-<td class="num">$177.5</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.21</td>
-<td class="num yld"><span class="bar" style="--w:14%"></span>0.1%</td>
-<td class="num dim">43%</td>
-<td class="num dim">47%</td>
-<td class="num dim">13775</td>
-<td class="num dim">10%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">12</td>
-<td class="tk">AMZN</td>
-<td class="num">$254.27</td>
-<td class="num">$255</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.20</td>
-<td class="num yld"><span class="bar" style="--w:14%"></span>0.1%</td>
-<td class="num dim">28%</td>
-<td class="num dim">30%</td>
-<td class="num dim">20864</td>
-<td class="num dim">5%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">13</td>
-<td class="tk">AAPL</td>
-<td class="num">$335.94</td>
-<td class="num">$337.5</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.23</td>
-<td class="num yld"><span class="bar" style="--w:14%"></span>0.1%</td>
-<td class="num dim">26%</td>
-<td class="num dim">24%</td>
-<td class="num dim">10373</td>
-<td class="num dim">4%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">14</td>
-<td class="tk">MSTR</td>
-<td class="num">$152.75</td>
-<td class="num">$155</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.11</td>
-<td class="num yld"><span class="bar" style="--w:14%"></span>0.1%</td>
-<td class="num dim">25%</td>
-<td class="num dim">66%</td>
-<td class="num dim">3945</td>
-<td class="num dim">10%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">15</td>
-<td class="tk">TSLA</td>
-<td class="num">$362.98</td>
-<td class="num">$365</td>
-<td class="num dim">09-18</td>
-<td class="num prem">$0.23</td>
-<td class="num yld"><span class="bar" style="--w:14%"></span>0.1%</td>
-<td class="num dim">24%</td>
-<td class="num dim">42%</td>
-<td class="num dim">9361</td>
-<td class="num dim">4%</td>
-<td></td>
+<tr class="ext">
+<td class="rank">10</td>
+<td class="tk">META</td>
+<td class="num">$699.49</td>
+<td class="num">$700</td>
+<td class="num dim">09-21</td>
+<td class="num prem">$4.88</td>
+<td class="num yld"><span class="bar" style="--w:37%"></span>0.7%</td>
+<td class="num dim">254%</td>
+<td class="num dim">39%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+3.5</td>
+<td class="num dim">3922</td>
+<td class="num dim">3%</td>
+<td><span class="pill warn">extended</span></td>
 </tr></tbody>
 </table></div>
 </section>
 <section>
 <div class="sec-head"><h2>This Friday (Sep 25)</h2></div>
 <div class="scroll"><table>
-<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
+<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th title="price change over the past week">1w</th><th title="ATRs above the 20-day moving average">vs20d</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
 <tbody><tr>
 <td class="rank">1</td>
-<td class="tk">WULF</td>
-<td class="num">$16.98</td>
-<td class="num">$17</td>
+<td class="tk">CRCL</td>
+<td class="num">$97.83</td>
+<td class="num">$98</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.72</td>
-<td class="num yld"><span class="bar" style="--w:100%"></span>4.2%</td>
-<td class="num dim">221%</td>
-<td class="num dim">80%</td>
-<td class="num dim">4476</td>
-<td class="num dim">6%</td>
+<td class="num prem">$3.65</td>
+<td class="num yld"><span class="bar" style="--w:100%"></span>3.7%</td>
+<td class="num dim">340%</td>
+<td class="num dim">76%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">+0.8</td>
+<td class="num dim">713</td>
+<td class="num dim">8%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">2</td>
-<td class="tk">BE</td>
-<td class="num">$272.45</td>
-<td class="num">$272.5</td>
+<td class="tk">SMR</td>
+<td class="num">$8.81</td>
+<td class="num">$9</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$11.48</td>
-<td class="num yld"><span class="bar" style="--w:100%"></span>4.2%</td>
-<td class="num dim">220%</td>
-<td class="num dim">80%</td>
-<td class="num dim">140</td>
-<td class="num dim">7%</td>
+<td class="num prem">$0.30</td>
+<td class="num yld"><span class="bar" style="--w:95%"></span>3.5%</td>
+<td class="num dim">316%</td>
+<td class="num dim">81%</td>
+<td class="num trend">+4%</td>
+<td class="num trend">-0.7</td>
+<td class="num dim">3276</td>
+<td class="num dim">10%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">3</td>
-<td class="tk">SMR</td>
-<td class="num">$8.47</td>
-<td class="num">$8.5</td>
+<td class="tk">CRWV</td>
+<td class="num">$82.85</td>
+<td class="num">$83</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.34</td>
-<td class="num yld"><span class="bar" style="--w:95%"></span>4.0%</td>
-<td class="num dim">209%</td>
-<td class="num dim">79%</td>
-<td class="num dim">2451</td>
-<td class="num dim">6%</td>
+<td class="num prem">$2.79</td>
+<td class="num yld"><span class="bar" style="--w:92%"></span>3.4%</td>
+<td class="num dim">307%</td>
+<td class="num dim">74%</td>
+<td class="num trend">-0%</td>
+<td class="num trend">-0.6</td>
+<td class="num dim">1588</td>
+<td class="num dim">5%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">4</td>
 <td class="tk">NBIS</td>
-<td class="num">$221.07</td>
-<td class="num">$222.5</td>
+<td class="num">$222.51</td>
+<td class="num">$225</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$8.77</td>
-<td class="num yld"><span class="bar" style="--w:95%"></span>4.0%</td>
-<td class="num dim">207%</td>
-<td class="num dim">78%</td>
-<td class="num dim">227</td>
-<td class="num dim">2%</td>
+<td class="num prem">$7.22</td>
+<td class="num yld"><span class="bar" style="--w:86%"></span>3.2%</td>
+<td class="num dim">296%</td>
+<td class="num dim">79%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+0.3</td>
+<td class="num dim">1431</td>
+<td class="num dim">6%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">5</td>
-<td class="tk">RIOT</td>
-<td class="num">$23.73</td>
-<td class="num">$24</td>
+<td class="tk">ASTS</td>
+<td class="num">$61.44</td>
+<td class="num">$62</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.94</td>
-<td class="num yld"><span class="bar" style="--w:93%"></span>3.9%</td>
-<td class="num dim">205%</td>
-<td class="num dim">78%</td>
-<td class="num dim">1132</td>
-<td class="num dim">3%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">6</td>
-<td class="tk">CRCL</td>
-<td class="num">$91.64</td>
-<td class="num">$92</td>
-<td class="num dim">09-25</td>
-<td class="num prem">$3.52</td>
-<td class="num yld"><span class="bar" style="--w:90%"></span>3.8%</td>
-<td class="num dim">201%</td>
+<td class="num prem">$1.80</td>
+<td class="num yld"><span class="bar" style="--w:78%"></span>2.9%</td>
+<td class="num dim">267%</td>
 <td class="num dim">71%</td>
-<td class="num dim">200</td>
+<td class="num trend">+2%</td>
+<td class="num trend">+0.2</td>
+<td class="num dim">714</td>
 <td class="num dim">7%</td>
 <td></td>
 </tr>
 <tr>
-<td class="rank">7</td>
-<td class="tk">IREN</td>
-<td class="num">$46.05</td>
-<td class="num">$46.5</td>
+<td class="rank">6</td>
+<td class="tk">SPCX</td>
+<td class="num">$154.49</td>
+<td class="num">$155</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$1.75</td>
-<td class="num yld"><span class="bar" style="--w:90%"></span>3.8%</td>
-<td class="num dim">199%</td>
-<td class="num dim">80%</td>
-<td class="num dim">571</td>
-<td class="num dim">5%</td>
+<td class="num prem">$3.90</td>
+<td class="num yld"><span class="bar" style="--w:68%"></span>2.5%</td>
+<td class="num dim">230%</td>
+<td class="num dim">49%</td>
+<td class="num trend">+4%</td>
+<td class="num trend">+1.1</td>
+<td class="num dim">12638</td>
+<td class="num dim">3%</td>
+<td></td>
+</tr>
+<tr>
+<td class="rank">7</td>
+<td class="tk">ACHR</td>
+<td class="num">$5.45</td>
+<td class="num">$5.5</td>
+<td class="num dim">09-25</td>
+<td class="num prem">$0.14</td>
+<td class="num yld"><span class="bar" style="--w:68%"></span>2.5%</td>
+<td class="num dim">226%</td>
+<td class="num dim">67%</td>
+<td class="num trend">-1%</td>
+<td class="num trend">-0.6</td>
+<td class="num dim">1833</td>
+<td class="num dim">7%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">8</td>
-<td class="tk">MARA</td>
-<td class="num">$13.26</td>
-<td class="num">$13.5</td>
+<td class="tk">UPST</td>
+<td class="num">$25.38</td>
+<td class="num">$25.5</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.51</td>
-<td class="num yld"><span class="bar" style="--w:90%"></span>3.8%</td>
-<td class="num dim">199%</td>
-<td class="num dim">81%</td>
-<td class="num dim">4101</td>
-<td class="num dim">2%</td>
+<td class="num prem">$0.62</td>
+<td class="num yld"><span class="bar" style="--w:65%"></span>2.4%</td>
+<td class="num dim">223%</td>
+<td class="num dim">58%</td>
+<td class="num trend">-3%</td>
+<td class="num trend">-1.5</td>
+<td class="num dim">212</td>
+<td class="num dim">10%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">9</td>
-<td class="tk">USAR</td>
-<td class="num">$15.40</td>
-<td class="num">$15.5</td>
+<td class="tk">HIMS</td>
+<td class="num">$28.41</td>
+<td class="num">$29</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.58</td>
-<td class="num yld"><span class="bar" style="--w:90%"></span>3.8%</td>
-<td class="num dim">198%</td>
-<td class="num dim">72%</td>
-<td class="num dim">137</td>
+<td class="num prem">$0.69</td>
+<td class="num yld"><span class="bar" style="--w:65%"></span>2.4%</td>
+<td class="num dim">222%</td>
+<td class="num dim">68%</td>
+<td class="num trend">-1%</td>
+<td class="num trend">-0.2</td>
+<td class="num dim">2163</td>
 <td class="num dim">9%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">10</td>
-<td class="tk">BMNR</td>
-<td class="num">$26.16</td>
-<td class="num">$26.5</td>
+<td class="tk">NOW</td>
+<td class="num">$137.52</td>
+<td class="num">$139</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.95</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>3.6%</td>
-<td class="num dim">190%</td>
-<td class="num dim">75%</td>
-<td class="num dim">615</td>
-<td class="num dim">3%</td>
+<td class="num prem">$2.99</td>
+<td class="num yld"><span class="bar" style="--w:59%"></span>2.2%</td>
+<td class="num dim">198%</td>
+<td class="num dim">55%</td>
+<td class="num trend">-3%</td>
+<td class="num trend">+0.1</td>
+<td class="num dim">750</td>
+<td class="num dim">8%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">11</td>
-<td class="tk">MRNA</td>
-<td class="num">$154.82</td>
-<td class="num">$155</td>
+<td class="tk">ORCL</td>
+<td class="num">$146.85</td>
+<td class="num">$147</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$5.62</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>3.6%</td>
-<td class="num dim">189%</td>
-<td class="num dim">76%</td>
-<td class="num dim">724</td>
-<td class="num dim">4%</td>
+<td class="num prem">$3.08</td>
+<td class="num yld"><span class="bar" style="--w:57%"></span>2.1%</td>
+<td class="num dim">191%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+1%</td>
+<td class="num trend">-0.4</td>
+<td class="num dim">1290</td>
+<td class="num dim">5%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">12</td>
-<td class="tk">SNDK</td>
-<td class="num">$1739.54</td>
-<td class="num">$1740</td>
+<td class="tk">RIVN</td>
+<td class="num">$15.55</td>
+<td class="num">$16</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$62.75</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>3.6%</td>
-<td class="num dim">188%</td>
-<td class="num dim">69%</td>
-<td class="num dim">264</td>
-<td class="num dim">1%</td>
+<td class="num prem">$0.29</td>
+<td class="num yld"><span class="bar" style="--w:51%"></span>1.9%</td>
+<td class="num dim">170%</td>
+<td class="num dim">54%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.5</td>
+<td class="num dim">5215</td>
+<td class="num dim">7%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">13</td>
-<td class="tk">COIN</td>
-<td class="num">$194.42</td>
-<td class="num">$195</td>
+<td class="tk">PLTR</td>
+<td class="num">$178.45</td>
+<td class="num">$180</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$6.85</td>
-<td class="num yld"><span class="bar" style="--w:83%"></span>3.5%</td>
-<td class="num dim">184%</td>
-<td class="num dim">60%</td>
-<td class="num dim">879</td>
-<td class="num dim">4%</td>
+<td class="num prem">$3.23</td>
+<td class="num yld"><span class="bar" style="--w:49%"></span>1.8%</td>
+<td class="num dim">165%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+3%</td>
+<td class="num trend">+0.4</td>
+<td class="num dim">22855</td>
+<td class="num dim">2%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">14</td>
-<td class="tk">IONQ</td>
-<td class="num">$38.88</td>
-<td class="num">$39</td>
+<td class="tk">AMZN</td>
+<td class="num">$254.72</td>
+<td class="num">$255</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$1.35</td>
-<td class="num yld"><span class="bar" style="--w:83%"></span>3.5%</td>
-<td class="num dim">182%</td>
-<td class="num dim">67%</td>
-<td class="num dim">1501</td>
-<td class="num dim">4%</td>
+<td class="num prem">$4.15</td>
+<td class="num yld"><span class="bar" style="--w:43%"></span>1.6%</td>
+<td class="num dim">149%</td>
+<td class="num dim">30%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">-0.2</td>
+<td class="num dim">10573</td>
+<td class="num dim">5%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">15</td>
-<td class="tk">CRWV</td>
-<td class="num">$81.17</td>
-<td class="num">$82</td>
+<td class="tk">QCOM</td>
+<td class="num">$180.98</td>
+<td class="num">$185</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$2.75</td>
-<td class="num yld"><span class="bar" style="--w:81%"></span>3.4%</td>
-<td class="num dim">176%</td>
-<td class="num dim">76%</td>
-<td class="num dim">1475</td>
-<td class="num dim">3%</td>
+<td class="num prem">$2.67</td>
+<td class="num yld"><span class="bar" style="--w:41%"></span>1.5%</td>
+<td class="num dim">135%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">+1.0</td>
+<td class="num dim">1580</td>
+<td class="num dim">4%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">16</td>
-<td class="tk">ARM</td>
-<td class="num">$269.36</td>
-<td class="num">$270</td>
+<td class="tk">AI</td>
+<td class="num">$10.53</td>
+<td class="num">$11</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$9.07</td>
-<td class="num yld"><span class="bar" style="--w:81%"></span>3.4%</td>
-<td class="num dim">176%</td>
-<td class="num dim">68%</td>
-<td class="num dim">496</td>
+<td class="num prem">$0.15</td>
+<td class="num yld"><span class="bar" style="--w:41%"></span>1.5%</td>
+<td class="num dim">134%</td>
+<td class="num dim">56%</td>
+<td class="num trend">-6%</td>
+<td class="num trend">+0.1</td>
+<td class="num dim">47126</td>
+<td class="num dim">6%</td>
+<td><span class="pill warn">fell hard</span></td>
+</tr>
+<tr>
+<td class="rank">17</td>
+<td class="tk">TSLA</td>
+<td class="num">$375.36</td>
+<td class="num">$377.5</td>
+<td class="num dim">09-25</td>
+<td class="num prem">$5.42</td>
+<td class="num yld"><span class="bar" style="--w:38%"></span>1.4%</td>
+<td class="num dim">132%</td>
+<td class="num dim">44%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+1.2</td>
+<td class="num dim">1693</td>
 <td class="num dim">3%</td>
 <td></td>
 </tr>
 <tr>
-<td class="rank">17</td>
-<td class="tk">APLD</td>
-<td class="num">$27.78</td>
-<td class="num">$28</td>
-<td class="num dim">09-25</td>
-<td class="num prem">$0.93</td>
-<td class="num yld"><span class="bar" style="--w:79%"></span>3.3%</td>
-<td class="num dim">175%</td>
-<td class="num dim">87%</td>
-<td class="num dim">1744</td>
-<td class="num dim">9%</td>
-<td></td>
-</tr>
-<tr>
 <td class="rank">18</td>
-<td class="tk">HIMS</td>
-<td class="num">$27.79</td>
-<td class="num">$28</td>
+<td class="tk">AVGO</td>
+<td class="num">$355.48</td>
+<td class="num">$357.5</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.93</td>
-<td class="num yld"><span class="bar" style="--w:79%"></span>3.3%</td>
-<td class="num dim">174%</td>
-<td class="num dim">67%</td>
-<td class="num dim">3469</td>
+<td class="num prem">$4.92</td>
+<td class="num yld"><span class="bar" style="--w:38%"></span>1.4%</td>
+<td class="num dim">126%</td>
+<td class="num dim">36%</td>
+<td class="num trend">+3%</td>
+<td class="num trend">-0.3</td>
+<td class="num dim">493</td>
 <td class="num dim">5%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">19</td>
-<td class="tk">MSTR</td>
-<td class="num">$152.75</td>
-<td class="num">$155</td>
+<td class="tk">SOFI</td>
+<td class="num">$17.25</td>
+<td class="num">$17.5</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$5.03</td>
-<td class="num yld"><span class="bar" style="--w:79%"></span>3.3%</td>
-<td class="num dim">172%</td>
-<td class="num dim">66%</td>
-<td class="num dim">1080</td>
-<td class="num dim">3%</td>
+<td class="num prem">$0.23</td>
+<td class="num yld"><span class="bar" style="--w:35%"></span>1.3%</td>
+<td class="num dim">119%</td>
+<td class="num dim">45%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.7</td>
+<td class="num dim">11396</td>
+<td class="num dim">4%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">20</td>
-<td class="tk">QBTS</td>
-<td class="num">$16.88</td>
-<td class="num">$17</td>
+<td class="tk">GLW</td>
+<td class="num">$153.64</td>
+<td class="num">$160</td>
 <td class="num dim">09-25</td>
-<td class="num prem">$0.55</td>
-<td class="num yld"><span class="bar" style="--w:79%"></span>3.3%</td>
-<td class="num dim">170%</td>
-<td class="num dim">71%</td>
-<td class="num dim">513</td>
-<td class="num dim">4%</td>
+<td class="num prem">$1.97</td>
+<td class="num yld"><span class="bar" style="--w:35%"></span>1.3%</td>
+<td class="num dim">117%</td>
+<td class="num dim">59%</td>
+<td class="num trend">+7%</td>
+<td class="num trend">+0.2</td>
+<td class="num dim">1147</td>
+<td class="num dim">10%</td>
 <td></td>
 </tr></tbody>
 </table></div>
@@ -581,284 +578,324 @@ bitcoin-treasury stocks move together) — several covered calls on them is one 
 <section>
 <div class="sec-head"><h2>Next Friday (Oct 2)</h2></div>
 <div class="scroll"><table>
-<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
+<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th title="price change over the past week">1w</th><th title="ATRs above the 20-day moving average">vs20d</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
 <tbody><tr>
 <td class="rank">1</td>
-<td class="tk">NBIS</td>
-<td class="num">$221.07</td>
-<td class="num">$222.5</td>
+<td class="tk">CRCL</td>
+<td class="num">$97.83</td>
+<td class="num">$99</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$12.93</td>
-<td class="num yld"><span class="bar" style="--w:100%"></span>5.8%</td>
-<td class="num dim">152%</td>
-<td class="num dim">78%</td>
-<td class="num dim">126</td>
-<td class="num dim">5%</td>
+<td class="num prem">$5.25</td>
+<td class="num yld"><span class="bar" style="--w:100%"></span>5.4%</td>
+<td class="num dim">178%</td>
+<td class="num dim">76%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">+0.8</td>
+<td class="num dim">157</td>
+<td class="num dim">6%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">2</td>
-<td class="tk">WULF</td>
-<td class="num">$16.98</td>
-<td class="num">$17</td>
+<td class="tk">NBIS</td>
+<td class="num">$222.51</td>
+<td class="num">$225</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$0.97</td>
-<td class="num yld"><span class="bar" style="--w:98%"></span>5.7%</td>
-<td class="num dim">149%</td>
-<td class="num dim">80%</td>
-<td class="num dim">268</td>
-<td class="num dim">6%</td>
+<td class="num prem">$11.25</td>
+<td class="num yld"><span class="bar" style="--w:94%"></span>5.1%</td>
+<td class="num dim">168%</td>
+<td class="num dim">79%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+0.3</td>
+<td class="num dim">446</td>
+<td class="num dim">8%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">3</td>
-<td class="tk">MARA</td>
-<td class="num">$13.26</td>
-<td class="num">$13.5</td>
+<td class="tk">CRWV</td>
+<td class="num">$82.85</td>
+<td class="num">$83</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$0.76</td>
-<td class="num yld"><span class="bar" style="--w:98%"></span>5.7%</td>
-<td class="num dim">148%</td>
-<td class="num dim">81%</td>
-<td class="num dim">1198</td>
-<td class="num dim">4%</td>
+<td class="num prem">$4.12</td>
+<td class="num yld"><span class="bar" style="--w:93%"></span>5.0%</td>
+<td class="num dim">165%</td>
+<td class="num dim">74%</td>
+<td class="num trend">-0%</td>
+<td class="num trend">-0.6</td>
+<td class="num dim">534</td>
+<td class="num dim">6%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">4</td>
-<td class="tk">RIOT</td>
-<td class="num">$23.73</td>
-<td class="num">$24</td>
+<td class="tk">ASTS</td>
+<td class="num">$61.44</td>
+<td class="num">$62</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$1.35</td>
-<td class="num yld"><span class="bar" style="--w:98%"></span>5.7%</td>
-<td class="num dim">148%</td>
-<td class="num dim">78%</td>
-<td class="num dim">8262</td>
-<td class="num dim">6%</td>
+<td class="num prem">$3.05</td>
+<td class="num yld"><span class="bar" style="--w:93%"></span>5.0%</td>
+<td class="num dim">165%</td>
+<td class="num dim">71%</td>
+<td class="num trend">+2%</td>
+<td class="num trend">+0.2</td>
+<td class="num dim">192</td>
+<td class="num dim">10%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">5</td>
-<td class="tk">BMNR</td>
-<td class="num">$26.16</td>
-<td class="num">$26.5</td>
+<td class="tk">USAR</td>
+<td class="num">$16.67</td>
+<td class="num">$17</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$1.41</td>
-<td class="num yld"><span class="bar" style="--w:93%"></span>5.4%</td>
-<td class="num dim">140%</td>
-<td class="num dim">75%</td>
-<td class="num dim">119</td>
-<td class="num dim">4%</td>
+<td class="num prem">$0.80</td>
+<td class="num yld"><span class="bar" style="--w:89%"></span>4.8%</td>
+<td class="num dim">159%</td>
+<td class="num dim">74%</td>
+<td class="num trend">+6%</td>
+<td class="num trend">-0.4</td>
+<td class="num dim">163</td>
+<td class="num dim">10%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">6</td>
-<td class="tk">APLD</td>
-<td class="num">$27.78</td>
-<td class="num">$28</td>
+<td class="tk">VRT</td>
+<td class="num">$249.69</td>
+<td class="num">$250</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$1.44</td>
-<td class="num yld"><span class="bar" style="--w:90%"></span>5.2%</td>
-<td class="num dim">135%</td>
-<td class="num dim">87%</td>
-<td class="num dim">722</td>
-<td class="num dim">5%</td>
+<td class="num prem">$10.48</td>
+<td class="num yld"><span class="bar" style="--w:78%"></span>4.2%</td>
+<td class="num dim">139%</td>
+<td class="num dim">55%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">-0.5</td>
+<td class="num dim">153</td>
+<td class="num dim">8%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">7</td>
-<td class="tk">HIMS</td>
-<td class="num">$27.79</td>
-<td class="num">$28</td>
+<td class="tk">NOW</td>
+<td class="num">$137.52</td>
+<td class="num">$138</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$1.44</td>
-<td class="num yld"><span class="bar" style="--w:90%"></span>5.2%</td>
-<td class="num dim">135%</td>
-<td class="num dim">67%</td>
-<td class="num dim">323</td>
-<td class="num dim">3%</td>
+<td class="num prem">$5.50</td>
+<td class="num yld"><span class="bar" style="--w:74%"></span>4.0%</td>
+<td class="num dim">133%</td>
+<td class="num dim">55%</td>
+<td class="num trend">-3%</td>
+<td class="num trend">+0.1</td>
+<td class="num dim">339</td>
+<td class="num dim">9%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">8</td>
-<td class="tk">CRWV</td>
-<td class="num">$81.17</td>
-<td class="num">$82</td>
+<td class="tk">NKE</td>
+<td class="num">$35.69</td>
+<td class="num">$36</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$4.17</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>5.1%</td>
-<td class="num dim">134%</td>
-<td class="num dim">76%</td>
-<td class="num dim">249</td>
-<td class="num dim">4%</td>
-<td></td>
+<td class="num prem">$1.42</td>
+<td class="num yld"><span class="bar" style="--w:74%"></span>4.0%</td>
+<td class="num dim">132%</td>
+<td class="num dim">47%</td>
+<td class="num trend">-4%</td>
+<td class="num trend">-2.2</td>
+<td class="num dim">625</td>
+<td class="num dim">5%</td>
+<td><span class="pill">earnings 10-01</span></td>
 </tr>
 <tr>
 <td class="rank">9</td>
-<td class="tk">MRNA</td>
-<td class="num">$154.82</td>
+<td class="tk">SPCX</td>
+<td class="num">$154.49</td>
 <td class="num">$155</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$7.95</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>5.1%</td>
-<td class="num dim">134%</td>
-<td class="num dim">76%</td>
-<td class="num dim">350</td>
-<td class="num dim">5%</td>
+<td class="num prem">$5.78</td>
+<td class="num yld"><span class="bar" style="--w:69%"></span>3.7%</td>
+<td class="num dim">124%</td>
+<td class="num dim">49%</td>
+<td class="num trend">+4%</td>
+<td class="num trend">+1.1</td>
+<td class="num dim">3533</td>
+<td class="num dim">3%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">10</td>
-<td class="tk">MU</td>
-<td class="num">$1007.85</td>
-<td class="num">$1010</td>
+<td class="tk">GLW</td>
+<td class="num">$153.64</td>
+<td class="num">$155</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$51.75</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>5.1%</td>
-<td class="num dim">134%</td>
-<td class="num dim">60%</td>
-<td class="num dim">545</td>
-<td class="num dim">3%</td>
-<td><span class="pill">earnings 09-30</span></td>
+<td class="num prem">$5.70</td>
+<td class="num yld"><span class="bar" style="--w:69%"></span>3.7%</td>
+<td class="num dim">123%</td>
+<td class="num dim">59%</td>
+<td class="num trend">+7%</td>
+<td class="num trend">+0.2</td>
+<td class="num dim">244</td>
+<td class="num dim">7%</td>
+<td></td>
 </tr>
 <tr>
 <td class="rank">11</td>
-<td class="tk">SNDK</td>
-<td class="num">$1739.54</td>
-<td class="num">$1750</td>
+<td class="tk">ORCL</td>
+<td class="num">$146.85</td>
+<td class="num">$147</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$89.30</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>5.1%</td>
-<td class="num dim">134%</td>
-<td class="num dim">69%</td>
-<td class="num dim">281</td>
-<td class="num dim">3%</td>
+<td class="num prem">$4.88</td>
+<td class="num yld"><span class="bar" style="--w:61%"></span>3.3%</td>
+<td class="num dim">110%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+1%</td>
+<td class="num trend">-0.4</td>
+<td class="num dim">344</td>
+<td class="num dim">5%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">12</td>
-<td class="tk">IREN</td>
-<td class="num">$46.05</td>
-<td class="num">$47</td>
+<td class="tk">RIVN</td>
+<td class="num">$15.55</td>
+<td class="num">$16</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$2.36</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>5.1%</td>
-<td class="num dim">134%</td>
-<td class="num dim">80%</td>
-<td class="num dim">629</td>
-<td class="num dim">3%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">13</td>
-<td class="tk">CRCL</td>
-<td class="num">$91.64</td>
-<td class="num">$93</td>
-<td class="num dim">10-02</td>
-<td class="num prem">$4.67</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>5.1%</td>
-<td class="num dim">133%</td>
-<td class="num dim">71%</td>
-<td class="num dim">228</td>
-<td class="num dim">5%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">14</td>
-<td class="tk">SMCI</td>
-<td class="num">$38.69</td>
-<td class="num">$39</td>
-<td class="num dim">10-02</td>
-<td class="num prem">$1.94</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>5.0%</td>
-<td class="num dim">131%</td>
-<td class="num dim">70%</td>
-<td class="num dim">923</td>
-<td class="num dim">3%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">15</td>
-<td class="tk">IONQ</td>
-<td class="num">$38.88</td>
-<td class="num">$39</td>
-<td class="num dim">10-02</td>
-<td class="num prem">$1.94</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>5.0%</td>
-<td class="num dim">130%</td>
-<td class="num dim">67%</td>
-<td class="num dim">773</td>
+<td class="num prem">$0.51</td>
+<td class="num yld"><span class="bar" style="--w:59%"></span>3.2%</td>
+<td class="num dim">108%</td>
+<td class="num dim">54%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.5</td>
+<td class="num dim">2131</td>
 <td class="num dim">6%</td>
 <td></td>
 </tr>
 <tr>
-<td class="rank">16</td>
-<td class="tk">COIN</td>
-<td class="num">$194.42</td>
-<td class="num">$195</td>
+<td class="rank">13</td>
+<td class="tk">QCOM</td>
+<td class="num">$180.98</td>
+<td class="num">$182.5</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$9.68</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>5.0%</td>
-<td class="num dim">130%</td>
-<td class="num dim">60%</td>
-<td class="num dim">553</td>
-<td class="num dim">5%</td>
+<td class="num prem">$5.55</td>
+<td class="num yld"><span class="bar" style="--w:57%"></span>3.1%</td>
+<td class="num dim">102%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">+1.0</td>
+<td class="num dim">132</td>
+<td class="num dim">7%</td>
 <td></td>
 </tr>
 <tr>
-<td class="rank">17</td>
-<td class="tk">ARM</td>
-<td class="num">$269.36</td>
-<td class="num">$270</td>
+<td class="rank">14</td>
+<td class="tk">PLTR</td>
+<td class="num">$178.45</td>
+<td class="num">$180</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$13.38</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>5.0%</td>
-<td class="num dim">129%</td>
-<td class="num dim">68%</td>
-<td class="num dim">130</td>
-<td class="num dim">5%</td>
-<td></td>
-</tr>
-<tr>
-<td class="rank">18</td>
-<td class="tk">QBTS</td>
-<td class="num">$16.88</td>
-<td class="num">$17</td>
-<td class="num dim">10-02</td>
-<td class="num prem">$0.83</td>
-<td class="num yld"><span class="bar" style="--w:84%"></span>4.9%</td>
-<td class="num dim">129%</td>
-<td class="num dim">71%</td>
-<td class="num dim">264</td>
+<td class="num prem">$5.35</td>
+<td class="num yld"><span class="bar" style="--w:56%"></span>3.0%</td>
+<td class="num dim">99%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+3%</td>
+<td class="num trend">+0.4</td>
+<td class="num dim">3396</td>
 <td class="num dim">4%</td>
 <td></td>
 </tr>
 <tr>
-<td class="rank">19</td>
-<td class="tk">SMR</td>
-<td class="num">$8.47</td>
-<td class="num">$8.5</td>
+<td class="rank">15</td>
+<td class="tk">NCLH</td>
+<td class="num">$14.27</td>
+<td class="num">$14.5</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$0.41</td>
-<td class="num yld"><span class="bar" style="--w:83%"></span>4.8%</td>
-<td class="num dim">126%</td>
-<td class="num dim">79%</td>
-<td class="num dim">354</td>
-<td class="num dim">5%</td>
+<td class="num prem">$0.42</td>
+<td class="num yld"><span class="bar" style="--w:54%"></span>2.9%</td>
+<td class="num dim">98%</td>
+<td class="num dim">55%</td>
+<td class="num trend">-3%</td>
+<td class="num trend">-2.1</td>
+<td class="num dim">252</td>
+<td class="num dim">10%</td>
+<td></td>
+</tr>
+<tr>
+<td class="rank">16</td>
+<td class="tk">HIMS</td>
+<td class="num">$28.41</td>
+<td class="num">$30</td>
+<td class="num dim">10-02</td>
+<td class="num prem">$0.81</td>
+<td class="num yld"><span class="bar" style="--w:54%"></span>2.9%</td>
+<td class="num dim">95%</td>
+<td class="num dim">68%</td>
+<td class="num trend">-1%</td>
+<td class="num trend">-0.2</td>
+<td class="num dim">3991</td>
+<td class="num dim">9%</td>
+<td></td>
+</tr>
+<tr>
+<td class="rank">17</td>
+<td class="tk">TSLA</td>
+<td class="num">$375.36</td>
+<td class="num">$377.5</td>
+<td class="num dim">10-02</td>
+<td class="num prem">$9.65</td>
+<td class="num yld"><span class="bar" style="--w:48%"></span>2.6%</td>
+<td class="num dim">85%</td>
+<td class="num dim">44%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+1.2</td>
+<td class="num dim">315</td>
+<td class="num dim">2%</td>
+<td></td>
+</tr>
+<tr>
+<td class="rank">18</td>
+<td class="tk">AMZN</td>
+<td class="num">$254.72</td>
+<td class="num">$255</td>
+<td class="num dim">10-02</td>
+<td class="num prem">$6.15</td>
+<td class="num yld"><span class="bar" style="--w:44%"></span>2.4%</td>
+<td class="num dim">80%</td>
+<td class="num dim">30%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">-0.2</td>
+<td class="num dim">2800</td>
+<td class="num dim">3%</td>
+<td></td>
+</tr>
+<tr>
+<td class="rank">19</td>
+<td class="tk">SOFI</td>
+<td class="num">$17.25</td>
+<td class="num">$17.5</td>
+<td class="num dim">10-02</td>
+<td class="num prem">$0.42</td>
+<td class="num yld"><span class="bar" style="--w:44%"></span>2.4%</td>
+<td class="num dim">80%</td>
+<td class="num dim">45%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.7</td>
+<td class="num dim">3665</td>
+<td class="num dim">7%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">20</td>
-<td class="tk">MSTR</td>
-<td class="num">$152.75</td>
-<td class="num">$155</td>
+<td class="tk">AVGO</td>
+<td class="num">$355.48</td>
+<td class="num">$357.5</td>
 <td class="num dim">10-02</td>
-<td class="num prem">$7.33</td>
-<td class="num yld"><span class="bar" style="--w:83%"></span>4.8%</td>
-<td class="num dim">125%</td>
-<td class="num dim">66%</td>
-<td class="num dim">422</td>
+<td class="num prem">$8.22</td>
+<td class="num yld"><span class="bar" style="--w:43%"></span>2.3%</td>
+<td class="num dim">77%</td>
+<td class="num dim">36%</td>
+<td class="num trend">+3%</td>
+<td class="num trend">-0.3</td>
+<td class="num dim">101</td>
 <td class="num dim">3%</td>
 <td></td>
 </tr></tbody>
@@ -867,286 +904,326 @@ bitcoin-treasury stocks move together) — several covered calls on them is one 
 <section>
 <div class="sec-head"><h2>Two weeks out (Oct 9)</h2></div>
 <div class="scroll"><table>
-<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
+<thead><tr><th></th><th class="l">Ticker</th><th>Price</th><th>Strike</th><th>Expiry</th><th>Premium</th><th>Yield</th><th>Annualized</th><th>IV</th><th title="price change over the past week">1w</th><th title="ATRs above the 20-day moving average">vs20d</th><th>OI</th><th>Spread</th><th class="l"></th></tr></thead>
 <tbody><tr>
 <td class="rank">1</td>
-<td class="tk">WULF</td>
-<td class="num">$16.98</td>
-<td class="num">$17</td>
+<td class="tk">CRWV</td>
+<td class="num">$82.85</td>
+<td class="num">$83</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$1.23</td>
-<td class="num yld"><span class="bar" style="--w:100%"></span>7.3%</td>
-<td class="num dim">126%</td>
-<td class="num dim">80%</td>
-<td class="num dim">158</td>
-<td class="num dim">2%</td>
+<td class="num prem">$5.45</td>
+<td class="num yld"><span class="bar" style="--w:86%"></span>6.6%</td>
+<td class="num dim">133%</td>
+<td class="num dim">74%</td>
+<td class="num trend">-0%</td>
+<td class="num trend">-0.6</td>
+<td class="num dim">137</td>
+<td class="num dim">6%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">2</td>
-<td class="tk">APLD</td>
-<td class="num">$27.78</td>
-<td class="num">$28</td>
+<td class="tk">NBIS</td>
+<td class="num">$222.51</td>
+<td class="num">$235</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$2.01</td>
-<td class="num yld"><span class="bar" style="--w:100%"></span>7.3%</td>
-<td class="num dim">126%</td>
-<td class="num dim">87%</td>
-<td class="num dim">473</td>
-<td class="num dim">9%</td>
-<td><span class="pill">earnings 10-08</span></td>
+<td class="num prem">$10.65</td>
+<td class="num yld"><span class="bar" style="--w:62%"></span>4.8%</td>
+<td class="num dim">97%</td>
+<td class="num dim">79%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+0.3</td>
+<td class="num dim">294</td>
+<td class="num dim">8%</td>
+<td></td>
 </tr>
 <tr>
 <td class="rank">3</td>
-<td class="tk">MARA</td>
-<td class="num">$13.26</td>
-<td class="num">$13.5</td>
+<td class="tk">SPCX</td>
+<td class="num">$154.49</td>
+<td class="num">$155</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$0.95</td>
-<td class="num yld"><span class="bar" style="--w:99%"></span>7.2%</td>
-<td class="num dim">125%</td>
-<td class="num dim">81%</td>
-<td class="num dim">4312</td>
+<td class="num prem">$7.20</td>
+<td class="num yld"><span class="bar" style="--w:61%"></span>4.7%</td>
+<td class="num dim">95%</td>
+<td class="num dim">49%</td>
+<td class="num trend">+4%</td>
+<td class="num trend">+1.1</td>
+<td class="num dim">932</td>
 <td class="num dim">3%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">4</td>
-<td class="tk">BE</td>
-<td class="num">$272.45</td>
-<td class="num">$275</td>
+<td class="tk">NKE</td>
+<td class="num">$35.69</td>
+<td class="num">$36</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$19.32</td>
-<td class="num yld"><span class="bar" style="--w:97%"></span>7.1%</td>
-<td class="num dim">123%</td>
-<td class="num dim">80%</td>
-<td class="num dim">147</td>
-<td class="num dim">9%</td>
-<td></td>
+<td class="num prem">$1.57</td>
+<td class="num yld"><span class="bar" style="--w:57%"></span>4.4%</td>
+<td class="num dim">89%</td>
+<td class="num dim">47%</td>
+<td class="num trend">-4%</td>
+<td class="num trend">-2.2</td>
+<td class="num dim">807</td>
+<td class="num dim">7%</td>
+<td><span class="pill">earnings 10-01</span></td>
 </tr>
 <tr>
 <td class="rank">5</td>
-<td class="tk">NBIS</td>
-<td class="num">$221.07</td>
-<td class="num">$225</td>
+<td class="tk">NOW</td>
+<td class="num">$137.52</td>
+<td class="num">$140</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$15.03</td>
-<td class="num yld"><span class="bar" style="--w:93%"></span>6.8%</td>
-<td class="num dim">118%</td>
-<td class="num dim">78%</td>
-<td class="num dim">251</td>
-<td class="num dim">2%</td>
+<td class="num prem">$6.00</td>
+<td class="num yld"><span class="bar" style="--w:57%"></span>4.4%</td>
+<td class="num dim">88%</td>
+<td class="num dim">55%</td>
+<td class="num trend">-3%</td>
+<td class="num trend">+0.1</td>
+<td class="num dim">126</td>
+<td class="num dim">7%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">6</td>
-<td class="tk">CRCL</td>
-<td class="num">$91.64</td>
-<td class="num">$92</td>
+<td class="tk">RIVN</td>
+<td class="num">$15.55</td>
+<td class="num">$16</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$6.20</td>
-<td class="num yld"><span class="bar" style="--w:93%"></span>6.8%</td>
-<td class="num dim">118%</td>
-<td class="num dim">71%</td>
-<td class="num dim">515</td>
-<td class="num dim">5%</td>
+<td class="num prem">$0.67</td>
+<td class="num yld"><span class="bar" style="--w:56%"></span>4.3%</td>
+<td class="num dim">87%</td>
+<td class="num dim">54%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.5</td>
+<td class="num dim">474</td>
+<td class="num dim">8%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">7</td>
-<td class="tk">IREN</td>
-<td class="num">$46.05</td>
-<td class="num">$47</td>
+<td class="tk">ORCL</td>
+<td class="num">$146.85</td>
+<td class="num">$147</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$3.08</td>
-<td class="num yld"><span class="bar" style="--w:92%"></span>6.7%</td>
-<td class="num dim">116%</td>
-<td class="num dim">80%</td>
-<td class="num dim">247</td>
-<td class="num dim">5%</td>
+<td class="num prem">$6.22</td>
+<td class="num yld"><span class="bar" style="--w:55%"></span>4.2%</td>
+<td class="num dim">86%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+1%</td>
+<td class="num trend">-0.4</td>
+<td class="num dim">148</td>
+<td class="num dim">9%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">8</td>
-<td class="tk">SNDK</td>
-<td class="num">$1739.54</td>
-<td class="num">$1750</td>
+<td class="tk">PLTR</td>
+<td class="num">$178.45</td>
+<td class="num">$180</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$113.85</td>
-<td class="num yld"><span class="bar" style="--w:89%"></span>6.5%</td>
-<td class="num dim">114%</td>
-<td class="num dim">69%</td>
-<td class="num dim">141</td>
-<td class="num dim">6%</td>
+<td class="num prem">$6.92</td>
+<td class="num yld"><span class="bar" style="--w:51%"></span>3.9%</td>
+<td class="num dim">79%</td>
+<td class="num dim">48%</td>
+<td class="num trend">+3%</td>
+<td class="num trend">+0.4</td>
+<td class="num dim">451</td>
+<td class="num dim">4%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">9</td>
-<td class="tk">RIOT</td>
-<td class="num">$23.73</td>
-<td class="num">$24</td>
+<td class="tk">SOFI</td>
+<td class="num">$17.25</td>
+<td class="num">$17.5</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$1.54</td>
-<td class="num yld"><span class="bar" style="--w:89%"></span>6.5%</td>
-<td class="num dim">113%</td>
-<td class="num dim">78%</td>
-<td class="num dim">335</td>
-<td class="num dim">6%</td>
+<td class="num prem">$0.58</td>
+<td class="num yld"><span class="bar" style="--w:44%"></span>3.4%</td>
+<td class="num dim">68%</td>
+<td class="num dim">45%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.7</td>
+<td class="num dim">15953</td>
+<td class="num dim">3%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">10</td>
-<td class="tk">CRWV</td>
-<td class="num">$81.17</td>
-<td class="num">$82</td>
+<td class="tk">TSLA</td>
+<td class="num">$375.36</td>
+<td class="num">$380</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$5.28</td>
-<td class="num yld"><span class="bar" style="--w:89%"></span>6.5%</td>
-<td class="num dim">113%</td>
-<td class="num dim">76%</td>
-<td class="num dim">651</td>
-<td class="num dim">5%</td>
+<td class="num prem">$11.38</td>
+<td class="num yld"><span class="bar" style="--w:39%"></span>3.0%</td>
+<td class="num dim">61%</td>
+<td class="num dim">44%</td>
+<td class="num trend">+5%</td>
+<td class="num trend">+1.2</td>
+<td class="num dim">1449</td>
+<td class="num dim">2%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">11</td>
-<td class="tk">IONQ</td>
-<td class="num">$38.88</td>
-<td class="num">$39</td>
+<td class="tk">AMZN</td>
+<td class="num">$254.72</td>
+<td class="num">$255</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$2.50</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>6.4%</td>
-<td class="num dim">112%</td>
-<td class="num dim">67%</td>
-<td class="num dim">206</td>
+<td class="num prem">$7.25</td>
+<td class="num yld"><span class="bar" style="--w:36%"></span>2.8%</td>
+<td class="num dim">58%</td>
+<td class="num dim">30%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">-0.2</td>
+<td class="num dim">627</td>
 <td class="num dim">6%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">12</td>
-<td class="tk">HPE</td>
-<td class="num">$59.74</td>
-<td class="num">$60</td>
+<td class="tk">AVGO</td>
+<td class="num">$355.48</td>
+<td class="num">$360</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$3.83</td>
-<td class="num yld"><span class="bar" style="--w:88%"></span>6.4%</td>
-<td class="num dim">111%</td>
-<td class="num dim">62%</td>
-<td class="num dim">1184</td>
-<td class="num dim">7%</td>
+<td class="num prem">$9.60</td>
+<td class="num yld"><span class="bar" style="--w:35%"></span>2.7%</td>
+<td class="num dim">55%</td>
+<td class="num dim">36%</td>
+<td class="num trend">+3%</td>
+<td class="num trend">-0.3</td>
+<td class="num dim">358</td>
+<td class="num dim">5%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">13</td>
-<td class="tk">QUBT</td>
-<td class="num">$8.46</td>
-<td class="num">$8.5</td>
+<td class="tk">GOOGL</td>
+<td class="num">$353.45</td>
+<td class="num">$355</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$0.54</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>6.3%</td>
-<td class="num dim">110%</td>
-<td class="num dim">68%</td>
-<td class="num dim">313</td>
-<td class="num dim">9%</td>
+<td class="num prem">$9.38</td>
+<td class="num yld"><span class="bar" style="--w:35%"></span>2.7%</td>
+<td class="num dim">54%</td>
+<td class="num dim">30%</td>
+<td class="num trend">+1%</td>
+<td class="num trend">+1.4</td>
+<td class="num dim">2354</td>
+<td class="num dim">4%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">14</td>
-<td class="tk">SMCI</td>
-<td class="num">$38.69</td>
-<td class="num">$39</td>
+<td class="tk">NVDA</td>
+<td class="num">$222.91</td>
+<td class="num">$225</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$2.44</td>
-<td class="num yld"><span class="bar" style="--w:86%"></span>6.3%</td>
-<td class="num dim">109%</td>
-<td class="num dim">70%</td>
-<td class="num dim">224</td>
+<td class="num prem">$5.88</td>
+<td class="num yld"><span class="bar" style="--w:34%"></span>2.6%</td>
+<td class="num dim">53%</td>
+<td class="num dim">32%</td>
+<td class="num trend">+6%</td>
+<td class="num trend">+0.6</td>
+<td class="num dim">7047</td>
 <td class="num dim">3%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">15</td>
-<td class="tk">MRVL</td>
-<td class="num">$238.60</td>
-<td class="num">$240</td>
+<td class="tk">NFLX</td>
+<td class="num">$72.06</td>
+<td class="num">$73</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$14.70</td>
-<td class="num yld"><span class="bar" style="--w:85%"></span>6.2%</td>
-<td class="num dim">107%</td>
-<td class="num dim">65%</td>
-<td class="num dim">1525</td>
-<td class="num dim">3%</td>
-<td></td>
+<td class="num prem">$1.69</td>
+<td class="num yld"><span class="bar" style="--w:30%"></span>2.3%</td>
+<td class="num dim">48%</td>
+<td class="num dim">41%</td>
+<td class="num trend">-10%</td>
+<td class="num trend">-2.8</td>
+<td class="num dim">308</td>
+<td class="num dim">6%</td>
+<td><span class="pill warn">fell hard</span></td>
 </tr>
 <tr>
 <td class="rank">16</td>
-<td class="tk">MSTR</td>
-<td class="num">$152.75</td>
-<td class="num">$155</td>
+<td class="tk">MSFT</td>
+<td class="num">$494.04</td>
+<td class="num">$495</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$9.22</td>
-<td class="num yld"><span class="bar" style="--w:82%"></span>6.0%</td>
-<td class="num dim">105%</td>
-<td class="num dim">66%</td>
-<td class="num dim">307</td>
-<td class="num dim">3%</td>
+<td class="num prem">$11.10</td>
+<td class="num yld"><span class="bar" style="--w:29%"></span>2.2%</td>
+<td class="num dim">46%</td>
+<td class="num dim">25%</td>
+<td class="num trend">-2%</td>
+<td class="num trend">-0.4</td>
+<td class="num dim">193</td>
+<td class="num dim">9%</td>
 <td></td>
 </tr>
 <tr>
 <td class="rank">17</td>
-<td class="tk">BMNR</td>
-<td class="num">$26.16</td>
-<td class="num">$27</td>
+<td class="tk">AAPL</td>
+<td class="num">$334.13</td>
+<td class="num">$335</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$1.54</td>
-<td class="num yld"><span class="bar" style="--w:81%"></span>5.9%</td>
-<td class="num dim">102%</td>
-<td class="num dim">75%</td>
-<td class="num dim">151</td>
-<td class="num dim">3%</td>
+<td class="num prem">$6.45</td>
+<td class="num yld"><span class="bar" style="--w:25%"></span>1.9%</td>
+<td class="num dim">39%</td>
+<td class="num dim">23%</td>
+<td class="num trend">+0%</td>
+<td class="num trend">+1.5</td>
+<td class="num dim">1643</td>
+<td class="num dim">6%</td>
 <td></td>
 </tr>
-<tr>
+<tr class="ext ext-first">
 <td class="rank">18</td>
-<td class="tk">SMR</td>
-<td class="num">$8.47</td>
-<td class="num">$8.5</td>
+<td class="tk">ASST</td>
+<td class="num">$30.83</td>
+<td class="num">$31</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$0.49</td>
-<td class="num yld"><span class="bar" style="--w:79%"></span>5.8%</td>
-<td class="num dim">101%</td>
+<td class="num prem">$2.38</td>
+<td class="num yld"><span class="bar" style="--w:100%"></span>7.7%</td>
+<td class="num dim">157%</td>
 <td class="num dim">79%</td>
-<td class="num dim">508</td>
-<td class="num dim">8%</td>
-<td></td>
+<td class="num trend">+6%</td>
+<td class="num trend">+2.7</td>
+<td class="num dim">348</td>
+<td class="num dim">10%</td>
+<td><span class="pill warn">extended</span></td>
 </tr>
-<tr>
+<tr class="ext">
 <td class="rank">19</td>
-<td class="tk">MU</td>
-<td class="num">$1007.85</td>
-<td class="num">$1015</td>
+<td class="tk">MARA</td>
+<td class="num">$13.86</td>
+<td class="num">$14</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$57.95</td>
-<td class="num yld"><span class="bar" style="--w:78%"></span>5.7%</td>
-<td class="num dim">100%</td>
-<td class="num dim">60%</td>
-<td class="num dim">414</td>
-<td class="num dim">3%</td>
-<td><span class="pill">earnings 09-30</span></td>
+<td class="num prem">$1.01</td>
+<td class="num yld"><span class="bar" style="--w:95%"></span>7.3%</td>
+<td class="num dim">148%</td>
+<td class="num dim">86%</td>
+<td class="num trend">+21%</td>
+<td class="num trend">+2.5</td>
+<td class="num dim">1200</td>
+<td class="num dim">2%</td>
+<td><span class="pill warn">extended</span></td>
 </tr>
-<tr>
+<tr class="ext">
 <td class="rank">20</td>
-<td class="tk">HOOD</td>
-<td class="num">$119.45</td>
-<td class="num">$120</td>
+<td class="tk">IREN</td>
+<td class="num">$46.74</td>
+<td class="num">$47</td>
 <td class="num dim">10-09</td>
-<td class="num prem">$6.85</td>
-<td class="num yld"><span class="bar" style="--w:78%"></span>5.7%</td>
-<td class="num dim">100%</td>
-<td class="num dim">59%</td>
-<td class="num dim">1313</td>
-<td class="num dim">3%</td>
-<td></td>
+<td class="num prem">$3.35</td>
+<td class="num yld"><span class="bar" style="--w:94%"></span>7.2%</td>
+<td class="num dim">145%</td>
+<td class="num dim">83%</td>
+<td class="num trend">+8%</td>
+<td class="num trend">+1.5</td>
+<td class="num dim">443</td>
+<td class="num dim">9%</td>
+<td><span class="pill warn">extended</span></td>
 </tr></tbody>
 </table></div>
 </section>
