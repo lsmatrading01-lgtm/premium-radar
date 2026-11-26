@@ -1,6 +1,6 @@
-# Highest ATM call premium — scan of 2026-11-26 (screener closes + live option quotes (daily discovery pass))
+# Highest ATM call premium — scan of 2026-11-26 (live tape prices + live option quotes)
 
-Universe: top-IV US common stocks/ADRs, mcap ≥ $500M, price ≥ $5, volume ≥ 3M shares/day (30d avg or today), total option OI ≥ 10000 (355 names scanned).
+Universe: top-IV US common stocks/ADRs, mcap ≥ $500M, price ≥ $5, volume ≥ 3M shares/day (30d avg or today), total option OI ≥ 10000 (62 names scanned).
 Premium = mid of the nearest at/above-the-money call (pure extrinsic). Yield = premium / stock price.
 Hard filters: contract OI >= 100, bid/ask spread <= 10% of mid. ⚠️E = earnings before expiry.
 These are buy-writes, so a name that already ran is the bad case. Calm names rank first; ⚠️X = extended (>1.5 ATR above its 20-day SMA, or >+7% on the week) and sorts below them. ⚠️▼ = down more than 5% on the week — shown, not demoted, since a falling knife is a different risk.
